@@ -5,7 +5,7 @@ export default function robots() {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: [],
+      disallow: ["/api/"],
     },
     sitemap: "https://mehndi-design.net/sitemap.xml",
   };
