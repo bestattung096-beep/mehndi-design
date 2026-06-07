@@ -162,6 +162,22 @@ function buildApiData() {
         ? getImagesFromFolder(cat.imageFolder)
         : [];
 
+      // If this category has subcategories AND its own images (e.g. "Back Hand"),
+      // inject it as the FIRST subcategory card so the app can navigate to it.
+      const hubSubcategory =
+        cat.subcategories.length > 0 && catImages.length > 0
+          ? [
+              {
+                id: `${cat.id}-hub`,
+                name: `All ${cat.name}`,
+                slug: cat.slug,
+                imageCount: catImages.length,
+                thumbnail: catImages[0].url,
+                images: catImages,
+              },
+            ]
+          : [];
+
       return {
         id: cat.id,
         name: cat.name,
@@ -170,18 +186,21 @@ function buildApiData() {
         icon: cat.icon,
         imageCount: catImages.length,
         thumbnail: catImages.length > 0 ? catImages[0].url : null,
-        subcategories: cat.subcategories.map((sub) => {
-          const subImages = getImagesFromFolder(sub.imageFolder);
-          return {
-            id: sub.id,
-            name: sub.name,
-            slug: sub.slug,
-            imageCount: subImages.length,
-            thumbnail: subImages.length > 0 ? subImages[0].url : null,
-            images: subImages,
-          };
-        }),
-        // Only include direct images for categories without subcategories
+        subcategories: [
+          ...hubSubcategory,
+          ...cat.subcategories.map((sub) => {
+            const subImages = getImagesFromFolder(sub.imageFolder);
+            return {
+              id: sub.id,
+              name: sub.name,
+              slug: sub.slug,
+              imageCount: subImages.length,
+              thumbnail: subImages.length > 0 ? subImages[0].url : null,
+              images: subImages,
+            };
+          }),
+        ],
+        // Direct images only for leaf categories (no subcategories)
         images: cat.subcategories.length === 0 ? catImages : [],
       };
     }),
