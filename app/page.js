@@ -70,7 +70,7 @@ export default function HomePage() {
       <section>
         <h2 className="section-title">Browse Categories</h2>
         <div className="home-category-grid">
-          {categoryCards.map((cat) => (
+          {categoryCards.map((cat, index) => (
             <Link
               href={`/${cat.slug}`}
               key={cat.id}
@@ -84,6 +84,8 @@ export default function HomePage() {
                     width={555}
                     height={689}
                     sizes="(max-width: 768px) 33vw, 120px"
+                    priority={index === 0}
+                    loading={index === 0 ? "eager" : "lazy"}
                   />
                 </span>
               ) : (

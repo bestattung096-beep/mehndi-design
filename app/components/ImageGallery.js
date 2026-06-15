@@ -84,6 +84,7 @@ export default function ImageGallery({ images }) {
               width={555}
               height={689}
               sizes="(max-width: 768px) 50vw, 180px"
+              loading={index === 0 ? "eager" : "lazy"}
             />
             {/* Download button overlay */}
             <button
@@ -118,6 +119,7 @@ export default function ImageGallery({ images }) {
               width={1110}
               height={1378}
               sizes="90vw"
+              loading="lazy"
             />
             <div className="lightbox-bottom">
               <p className="lightbox-title">{images[lightboxIndex].title}</p>

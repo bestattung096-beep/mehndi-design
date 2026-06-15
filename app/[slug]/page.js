@@ -111,6 +111,7 @@ function CategoryIndexTile({ href, image, title, count }) {
             width={555}
             height={689}
             sizes="(max-width: 768px) 45vw, 180px"
+            loading="lazy"
           />
         ) : (
           <span className="category-index-placeholder">Designs</span>
