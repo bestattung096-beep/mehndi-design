@@ -15,23 +15,63 @@ import { fileURLToPath } from "url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
 const PUBLIC = path.join(ROOT, "public");
+const APP_DATA = path.join(ROOT, "app", "data");
 
 // ─── Site Config ────────────────────────────────────────────────
 const SITE_URL = "https://mehndi-design.net";
 
 // ─── Image scanner ──────────────────────────────────────────────
-function getImages(folderPath, basePublicPath) {
-  const fullPath = path.join(PUBLIC, basePublicPath, folderPath);
+function buildImageText(file, publicPath) {
+  const fileName = path.parse(file).name;
+  const folderName = publicPath
+    .split("/")
+    .filter(Boolean)
+    .pop()
+    ?.replace(/[-_]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  const base = fileName.toLowerCase().includes("mehndi")
+    ? fileName
+    : `${fileName} ${folderName || "Mehndi Design"} Mehndi Design`;
+
+  return base.replace(/\s+/g, " ").trim();
+}
+
+function normalizePublicPath(folderPath, basePublicPath, isPublicRoot = false) {
+  const encodedPath = folderPath
+    .split("/")
+    .map(encodeURIComponent)
+    .join("/");
+
+  return isPublicRoot
+    ? `/${encodedPath}`
+    : `/${basePublicPath}/${encodedPath}`;
+}
+
+function getImages(folderPath, basePublicPath, isPublicRoot = false) {
+  const fullPath = isPublicRoot
+    ? path.join(PUBLIC, folderPath)
+    : path.join(PUBLIC, basePublicPath, folderPath);
+
   if (!fs.existsSync(fullPath)) return [];
+
+  const publicPath = normalizePublicPath(folderPath, basePublicPath, isPublicRoot);
 
   return fs
     .readdirSync(fullPath)
     .filter((f) => /\.(jpg|jpeg|png|webp)$/i.test(f))
     .sort()
-    .map((f) => ({
-      url: `${SITE_URL}/${basePublicPath}/${folderPath}/${encodeURIComponent(f)}`.replace(/\/+/g, "/").replace(":/", "://"),
-      alt: path.parse(f).name,
-    }));
+    .map((f) => {
+      const src = `${publicPath}/${encodeURIComponent(f)}`;
+      const alt = buildImageText(f, publicPath);
+      return {
+        src,
+        url: `${SITE_URL}${src}`,
+        alt,
+        title: alt,
+      };
+    });
 }
 
 function getImagesFromFolder(folder) {
@@ -39,17 +79,27 @@ function getImagesFromFolder(folder) {
 }
 
 function getImagesFromPublicFolder(folder) {
-  const fullPath = path.join(PUBLIC, folder);
-  if (!fs.existsSync(fullPath)) return [];
+  return getImages(folder, "", true);
+}
 
-  return fs
-    .readdirSync(fullPath)
-    .filter((f) => /\.(jpg|jpeg|png|webp)$/i.test(f))
-    .sort()
-    .map((f) => ({
-      url: `${SITE_URL}/${encodeURIComponent(folder)}/${encodeURIComponent(f)}`,
-      alt: path.parse(f).name,
-    }));
+function buildImagesManifest() {
+  const manifest = {};
+
+  manifest["all time best images"] = getImagesFromPublicFolder("all time best images");
+  manifest["latest designs"] = getImagesFromPublicFolder("latest designs");
+
+  categories.forEach((cat) => {
+    if (cat.imageFolder) {
+      manifest[cat.imageFolder] = getImagesFromFolder(cat.imageFolder);
+    }
+    cat.subcategories.forEach((sub) => {
+      if (sub.imageFolder) {
+        manifest[sub.imageFolder] = getImagesFromFolder(sub.imageFolder);
+      }
+    });
+  });
+
+  return manifest;
 }
 
 // ─── Category definitions (mirroring siteData.js) ───────────────
@@ -167,15 +217,15 @@ function buildApiData() {
       const hubSubcategory =
         cat.subcategories.length > 0 && catImages.length > 0
           ? [
-              {
-                id: `${cat.id}-hub`,
-                name: `All ${cat.name}`,
-                slug: cat.slug,
-                imageCount: catImages.length,
-                thumbnail: catImages[0].url,
-                images: catImages,
-              },
-            ]
+            {
+              id: `${cat.id}-hub`,
+              name: `All ${cat.name}`,
+              slug: cat.slug,
+              imageCount: catImages.length,
+              thumbnail: catImages[0].url,
+              images: catImages,
+            },
+          ]
           : [];
 
       return {
@@ -221,12 +271,18 @@ function buildApiData() {
 // ─── Write to /public/api/data.json ─────────────────────────────
 const apiDir = path.join(PUBLIC, "api");
 if (!fs.existsSync(apiDir)) fs.mkdirSync(apiDir, { recursive: true });
+if (!fs.existsSync(APP_DATA)) fs.mkdirSync(APP_DATA, { recursive: true });
 
 const data = buildApiData();
 const outPath = path.join(apiDir, "data.json");
 fs.writeFileSync(outPath, JSON.stringify(data, null, 2), "utf-8");
 
+const imagesManifest = buildImagesManifest();
+const imagesManifestPath = path.join(APP_DATA, "images.json");
+fs.writeFileSync(imagesManifestPath, JSON.stringify(imagesManifest, null, 2), "utf-8");
+
 console.log(`✅ Generated ${outPath}`);
+console.log(`✅ Generated ${imagesManifestPath}`);
 console.log(`   Total images: ${data.totalImages}`);
 console.log(`   Categories: ${data.categories.length}`);
 console.log(`   Collections: ${data.collections.length}`);
