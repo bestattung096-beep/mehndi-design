@@ -1,2 +1,4 @@
 facebook.com, 1254757968628382, DIRECT, c3e20eee3f780d68
 google.com, pub-2720904192395267, DIRECT, f08c47fec0942fa0
+vungle.com, 679100c17e5a1b001149ec48, DIRECT, c107d686becd2d77
+applovin.com, 8a9ba411914c23c645ae6c401968f2ec, DIRECT
