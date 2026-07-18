@@ -207,7 +207,7 @@ const categories = [
     id: "flower",
     name: "Flower Designs",
     slug: "flower-mehndi-designs",
-    title: "Flower Tikki Mehndi Designs - Eid & Diwali",
+    title: "Tikki Flower Mehndi Designs - Eid & Diwali",
     icon: "🌸",
     imageFolder: "flower mehndi design",
     subcategories: [],
