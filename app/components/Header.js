@@ -8,9 +8,14 @@ export default function Header() {
   const categoryMenuItems = [
     { name: "Arabic Designs", slug: "arabic-mehndi-designs" },
     { name: "Bridal Designs", slug: "bridal-mehndi-designs" },
+    { name: "Kids Designs", slug: "kids-mehndi-designs" },
+    { name: "Leg Designs", slug: "leg-mehndi-designs" },
+    { name: "Flower Designs", slug: "flower-mehndi-designs" },
     { name: "Latest Designs", slug: "latest-mehndi-designs" },
     { name: "Best Designs", slug: "best-mehndi-designs" },
   ];
+
+
 
   return (
     <header className="header">

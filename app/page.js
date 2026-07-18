@@ -36,8 +36,9 @@ export const metadata = {
 };
 
 export default function HomePage() {
-  const latestImages = getImagesFromPublicFolder("latest designs");
-  const allTimeBestImages = getImagesFromPublicFolder("all time best images");
+  const latestImages = getImagesFromPublicFolder("latest designs").slice(0, 6);
+  const allTimeBestImages = getImagesFromPublicFolder("all time best images").slice(0, 6);
+  const newBackHandPreviewImages = getImagesFromFolder("back/new").slice(0, 6);
   const bridalPreviewImages = getImagesFromFolder("bridal").slice(0, 6);
   const minimalBackHandPreviewImages = getImagesFromFolder(
     "back/Khafif (Minimal) back hand"
@@ -46,18 +47,23 @@ export default function HomePage() {
     "front/royal front hand"
   ).slice(0, 6);
 
-  // Get first image from each category as thumbnail
-  const categoryCards = categories.map((cat) => {
-    let folder = cat.imageFolder;
-    // If no direct images (like full hand hub), use first subcategory
-    if (!folder && cat.subcategories.length > 0) {
-      folder = cat.subcategories[0].imageFolder;
-    }
-    const images = getImagesFromFolder(folder);
-    const thumbnail = images.length > 0 ? images[0] : null;
+  // Hidden from homepage (still accessible via their own URLs)
+  const HOME_HIDDEN_CATEGORIES = ["arabic", "fingers", "back-hand"];
 
-    return { ...cat, thumbnail };
-  });
+  // Get first image from each category as thumbnail
+  const categoryCards = categories
+    .filter((cat) => !HOME_HIDDEN_CATEGORIES.includes(cat.id))
+    .map((cat) => {
+      let folder = cat.imageFolder;
+      // If no direct images (like full hand hub), use first subcategory
+      if (!folder && cat.subcategories.length > 0) {
+        folder = cat.subcategories[0].imageFolder;
+      }
+      const images = getImagesFromFolder(folder);
+      const thumbnail = images.length > 0 ? images[0] : null;
+
+      return { ...cat, thumbnail };
+    });
 
   return (
     <>
@@ -107,13 +113,33 @@ export default function HomePage() {
       </section>
 
       <section>
+        <h2 className="section-title">New Back Hand Mehndi Designs</h2>
+        <ImageGallery images={newBackHandPreviewImages} />
+        <div className="show-more-wrap">
+          <Link href="/new-back-hand-mehndi-designs" className="show-more-button">
+            Show More
+          </Link>
+        </div>
+      </section>
+
+      <section>
         <h2 className="section-title">All Time Best Mehndi Henna Designs</h2>
         <ImageGallery images={allTimeBestImages} />
+        <div className="show-more-wrap">
+          <Link href="/best-mehndi-designs" className="show-more-button">
+            Show More
+          </Link>
+        </div>
       </section>
 
       <section>
         <h2 className="section-title">Latest Mehndi Designs</h2>
         <ImageGallery images={latestImages} />
+        <div className="show-more-wrap">
+          <Link href="/latest-mehndi-designs" className="show-more-button">
+            Show More
+          </Link>
+        </div>
       </section>
 
       <section>
