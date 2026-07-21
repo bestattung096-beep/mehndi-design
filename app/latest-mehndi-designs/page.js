@@ -1,12 +1,14 @@
 import Link from "next/link";
 import ImageGallery from "../components/ImageGallery";
+import RichContent from "../components/RichContent";
 import { BreadcrumbSchema, GallerySchema } from "../components/SchemaMarkup";
 import { getImagesFromPublicFolder } from "../lib/images";
+import { siteContent } from "../data/siteContent";
 
 export const metadata = {
-  title: "Latest Mehndi Designs - 26 New Henna Designs | Mehndi Designs",
+  title: "Enjoy trending Latest Mehndi Designs for your beautiful hands",
   description:
-    "Explore the 26 latest mehndi designs including new henna patterns, modern styles, flowing vine motifs, and stylish finger cuff patterns for every occasion.",
+    "These are the latest mehndi designs of year 2026 including new henna patterns, modern styles, ",
   keywords:
     "latest mehndi designs, new henna designs, simple latest mehndi, trendy henna patterns, modern mehndi design",
   alternates: {
@@ -38,6 +40,7 @@ export const metadata = {
 
 export default function LatestMehndiDesignsPage() {
   const images = getImagesFromPublicFolder("latest designs");
+  const content = siteContent["latest-mehndi-designs"];
 
   return (
     <>
@@ -65,32 +68,15 @@ export default function LatestMehndiDesignsPage() {
 
       <section className="page-hero">
         <h1>Latest Mehndi Designs</h1>
-        <p>
-          Stay ahead of the trend with our collection of the latest mehndi designs
-          and new henna patterns. From minimalist back hand lines to glamorous
-          modern floral accents, find fresh inspiration here.
-        </p>
         <div className="image-count-badge">26 New Designs Added</div>
       </section>
 
       <ImageGallery images={images} />
 
-      <section className="seo-content">
-        <h2>Fresh & Trendy New Henna Designs</h2>
-        <p>
-          Our latest collection features 26 newly added mehndi designs that
-          blend traditional henna artistry with modern, contemporary styles.
-          Here you will find creative new henna designs including finger cuffs,
-          aesthetic wrist chains, and stunning mesh patterns that are currently
-          trending.
-        </p>
-        <p>
-          Every image in this gallery is formatted in high resolution, perfectly
-          optimized, and available for direct download. Save your favorite modern
-          mehndi pattern and show it to your henna artist for your next special
-          event.
-        </p>
-      </section>
+      <RichContent
+        heading={content?.heading || "Latest Mehndi Designs"}
+        paragraphs={content?.paragraphs}
+      />
     </>
   );
 }

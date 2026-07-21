@@ -7,7 +7,7 @@ import ImageGallery from "./components/ImageGallery";
 export const metadata = {
   title: "1500+ Beautiful Mehndi Designs & Henna Patterns for Every Occasion",
   description:
-    "Enjoy stunning mehndi designs for back hand, front hand, full hand, fingers, arabic, and bridal henna. Find your perfect henna design today.",
+    "Enjoy Asian mehndi designs for back hand, front hand, full hand, fingers, arabic, and bridal henna. Find your perfect henna design today.",
   alternates: {
     canonical: "/",
   },

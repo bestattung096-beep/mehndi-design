@@ -6,8 +6,10 @@ import {
   getSubcategoryBySlug,
   getAllSlugs,
 } from "../data/siteData";
+import { siteContent } from "../data/siteContent";
 import { getImagesFromFolder } from "../lib/images";
 import ImageGallery from "../components/ImageGallery";
+import RichContent from "../components/RichContent";
 import { BreadcrumbSchema, GallerySchema } from "../components/SchemaMarkup";
 
 const SITE_URL = "https://mehndi-design.net";
@@ -147,6 +149,8 @@ function CategoryHubPage({ category }) {
     mainImages.length +
     subcategoryCards.reduce((sum, sub) => sum + sub.count, 0);
 
+  const content = siteContent[category.slug];
+
   return (
     <>
       <BreadcrumbSchema
@@ -178,7 +182,6 @@ function CategoryHubPage({ category }) {
       {/* Hero */}
       <section className="page-hero">
         <h1>{category.title}</h1>
-        <p>{category.description}</p>
         <div className="image-count-badge">
           ✦ {totalCount}+ Designs Available
         </div>
@@ -211,17 +214,10 @@ function CategoryHubPage({ category }) {
       )}
 
       {/* SEO Content */}
-      <section className="seo-content">
-        <h2>About {category.title}</h2>
-        <p>{category.description}</p>
-        <p>
-          Our {category.name.toLowerCase()} mehndi collection features{" "}
-          {totalCount}+ unique designs across {subcategoryCards.length} different
-          styles. Each design has been carefully selected to give you
-          inspiration for your next henna application, whether it is for a
-          wedding, festival, party, or everyday wear.
-        </p>
-      </section>
+      <RichContent
+        heading={content?.heading || category.title}
+        paragraphs={content?.paragraphs}
+      />
     </>
   );
 }
@@ -234,6 +230,8 @@ function SubcategoryPage({ subcategory, parent }) {
   const siblings = parent.subcategories.filter(
     (s) => s.id !== subcategory.id
   );
+
+  const content = siteContent[subcategory.slug];
 
   return (
     <>
@@ -265,7 +263,6 @@ function SubcategoryPage({ subcategory, parent }) {
       {/* Hero */}
       <section className="page-hero">
         <h1>{subcategory.title}</h1>
-        <p>{subcategory.description}</p>
         <div className="image-count-badge">
           ✦ {images.length} Designs
         </div>
@@ -301,18 +298,10 @@ function SubcategoryPage({ subcategory, parent }) {
       )}
 
       {/* SEO Content */}
-      <section className="seo-content">
-        <h2>About {subcategory.title}</h2>
-        <p>{subcategory.description}</p>
-        <p>
-          This collection showcases {images.length} unique{" "}
-          {subcategory.name.toLowerCase()} designs for the{" "}
-          {parent.name.toLowerCase()} area. Each pattern is carefully curated to
-          provide inspiration for your next henna application. Browse through
-          our gallery, click on any design to view it in full size, and find the
-          perfect mehndi pattern for your next occasion.
-        </p>
-      </section>
+      <RichContent
+        heading={content?.heading || subcategory.title}
+        paragraphs={content?.paragraphs}
+      />
     </>
   );
 }

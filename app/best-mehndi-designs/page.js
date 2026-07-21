@@ -1,12 +1,14 @@
 import Link from "next/link";
 import ImageGallery from "../components/ImageGallery";
+import RichContent from "../components/RichContent";
 import { BreadcrumbSchema, GallerySchema } from "../components/SchemaMarkup";
 import { getImagesFromPublicFolder } from "../lib/images";
+import { siteContent } from "../data/siteContent";
 
 export const metadata = {
-  title: "Best Mehndi Designs - 20 Most Famous Henna Designs | Mehndi Designs",
+  title: "Enjoy all time Best Mehndi Designs for your events",
   description:
-    "Explore the 20 all-time best mehndi designs including the most famous henna patterns, elegant florals, royal bridal designs, and stunning peacock motifs.",
+    "Explore top evergreen best mehndi designs, the most famous henna patterns, elegant florals, royal bridal designs, and stunning peacock motifs.",
   keywords:
     "best mehndi designs, famous henna designs, top mehndi designs, most popular henna, beautiful mehndi, best henna patterns",
   alternates: {
@@ -38,6 +40,7 @@ export const metadata = {
 
 export default function BestMehndiDesignsPage() {
   const images = getImagesFromPublicFolder("all time best images");
+  const content = siteContent["best-mehndi-designs"];
 
   return (
     <>
@@ -65,32 +68,15 @@ export default function BestMehndiDesignsPage() {
 
       <section className="page-hero">
         <h1>Best Mehndi Designs</h1>
-        <p>
-          Discover the all-time best mehndi designs and most famous henna
-          patterns hand-picked for their beauty, intricacy, and elegance.
-          Perfect for weddings, festivals, and special occasions.
-        </p>
         <div className="image-count-badge">20 Hand-Picked Designs</div>
       </section>
 
       <ImageGallery images={images} />
 
-      <section className="seo-content">
-        <h2>The Most Famous Henna Designs of All Time</h2>
-        <p>
-          This curated collection showcases the 20 most beautiful and iconic
-          mehndi designs ever created. Each design has been carefully selected
-          for its artistic excellence, featuring the finest examples of floral
-          mehndi, geometric henna, peacock motifs, bridal patterns, and Arabic
-          vine-style art.
-        </p>
-        <p>
-          Whether you are looking for inspiration for a wedding, Eid
-          celebration, or want to try a classic henna pattern, these timeless
-          best mehndi designs will give you everything you need. Browse, save,
-          and download your favorites.
-        </p>
-      </section>
+      <RichContent
+        heading={content?.heading || "Best Mehndi Designs"}
+        paragraphs={content?.paragraphs}
+      />
     </>
   );
 }
