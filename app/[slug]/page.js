@@ -164,7 +164,7 @@ function CategoryHubPage({ category }) {
       />
       <GallerySchema
         title={category.title}
-        description={category.description}
+        description={category.metaDescription}
         url={`${SITE_URL}/${category.slug}/`}
         images={
           mainImages.length > 0
@@ -247,7 +247,7 @@ function SubcategoryPage({ subcategory, parent }) {
       />
       <GallerySchema
         title={subcategory.title}
-        description={subcategory.description}
+        description={subcategory.metaDescription}
         url={`${SITE_URL}/${subcategory.slug}/`}
         images={images}
       />

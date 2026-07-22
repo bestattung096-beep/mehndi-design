@@ -9,7 +9,7 @@ export const metadata = {
   description:
     "Browse all mehndi design categories including back hand, front hand, full hand, finger, Arabic, bridal, simple, modern, stylish, and minimal henna designs.",
   keywords:
-    "mehndi design categories, henna design categories, all mehndi designs, back hand designs, front hand designs, bridal mehndi categories",
+    "mehndi design categories, henna design categories, all mehndi designs.",
   alternates: {
     canonical: "/mehndi-design-categories/",
   },

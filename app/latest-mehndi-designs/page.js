@@ -8,16 +8,16 @@ import { siteContent } from "../data/siteContent";
 export const metadata = {
   title: "Enjoy trending Latest Mehndi Designs for your beautiful hands",
   description:
-    "These are the latest mehndi designs of year 2026 including new henna patterns, modern styles, ",
+    "These are the latest mehndi designs of year 2026 including new henna patterns, modern styles. ",
   keywords:
-    "latest mehndi designs, new henna designs, simple latest mehndi, trendy henna patterns, modern mehndi design",
+    "latest mehndi designs, new henna designs, simple latest mehndi, trendy henna patterns",
   alternates: {
     canonical: "/latest-mehndi-designs/",
   },
   openGraph: {
-    title: "Latest Mehndi Designs - 26 New Henna Designs",
+    title: "Enjoy trending Latest Mehndi Designs for your beautiful hands",
     description:
-      "Explore the 26 latest mehndi designs and new henna patterns.",
+      "These are the latest mehndi designs of year 2026 including new henna patterns, modern styles,.",
     url: "/latest-mehndi-designs/",
     images: [
       {
